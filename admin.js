@@ -40,7 +40,11 @@ function render() {
     li.className = 'item';
     const box = document.createElement('div');
     const p = document.createElement('p');
-    p.textContent = it.text;
+    // 고른 색·모양을 작은 도형으로
+    const dot = document.createElement('span');
+    dot.className = `dot ${it.shape || ''}`;
+    dot.style.setProperty('--col', `var(--c${it.color ?? 0})`);
+    p.append(dot, it.text);
     const s = document.createElement('small');
     s.textContent = [it.name || '(이름 없음)', when(it.at)].join(' · ');
     box.append(p, s);
@@ -78,7 +82,9 @@ const stamp = () => when(new Date().toISOString()).slice(0, 10);
 $('csv').onclick = () => {
   // 오래된 글부터. 맨 앞 ﻿는 엑셀에서 한글이 안 깨지게 하는 표시
   const q = (s) => `"${String(s ?? '').replace(/"/g, '""')}"`;
-  const rows = [['번호', '버킷리스트', '이름', '남긴 시간'], ...[...items].reverse().map((it, i) => [i + 1, it.text, it.name, when(it.at)])];
+  const COLORS = ['보라', '하늘', '주황', '분홍', '초록', '연두'];
+  const SHAPES = { square: '네모', triangle: '세모', circle: '동그라미' };
+  const rows = [['번호', '버킷리스트', '이름', '색', '모양', '남긴 시간'], ...[...items].reverse().map((it, i) => [i + 1, it.text, it.name, COLORS[it.color] ?? '', SHAPES[it.shape] ?? '', when(it.at)])];
   download(`bucketlist-${stamp()}.csv`, '﻿' + rows.map((r) => r.map(q).join(',')).join('\r\n'), 'text/csv;charset=utf-8');
 };
 $('json').onclick = () => download(`bucketlist-${stamp()}.json`, JSON.stringify([...items].reverse(), null, 2), 'application/json');

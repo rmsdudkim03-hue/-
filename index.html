@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#c7c6c7">
 <title>BUCKET LIST</title>
-<meta name="description" content="전시 방명록 — 나의 버킷리스트 한 줄">
+<meta name="description" content="전시 방명록 — 색과 모양을 골라 나의 버킷리스트 한 줄">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
@@ -14,32 +14,54 @@
 <body>
 <main class="page">
   <header class="head">
-    <p class="eyebrow">GUESTBOOK</p>
     <h1>BUCKET LIST</h1>
-    <p class="lead">살면서 꼭 해 보고 싶은 일 하나를 남겨 주세요.</p>
+    <p class="count" id="count"></p>
   </header>
 
-  <!-- 글 남기기 -->
+  <!-- 모두의 버킷리스트: 격자 판 위에 도형으로. 도형을 누르면 글이 보임 -->
+  <section class="board" id="board" aria-label="모두의 버킷리스트">
+    <div class="layer shadows" id="shadows"></div>
+    <div class="layer pieces" id="pieces"></div>
+  </section>
+  <p class="empty" id="empty" hidden>아직 남긴 글이 없어요.<br>첫 번째 도형을 놓아 주세요.</p>
+  <p class="note" id="note"></p>
+</main>
+
+<button class="cta" id="open">나도 남기기</button>
+
+<!-- 쓰기 화면: 색 6개 + 모양 3개 고르고 한 줄 쓰기 -->
+<section class="sheet" id="sheet" hidden aria-label="버킷리스트 쓰기">
   <form class="write" id="write" autocomplete="off">
+    <button type="button" class="close" id="close" aria-label="닫기">×</button>
+    <h2>나의 버킷리스트</h2>
+    <p class="guide">색과 모양을 하나씩 골라 주세요.</p>
+
+    <div class="pick">
+      <div class="colors" id="colors" role="radiogroup" aria-label="색"></div>
+      <div class="shapes" id="shapes" role="radiogroup" aria-label="모양"></div>
+    </div>
+
     <label class="sr" for="text">버킷리스트</label>
-    <textarea id="text" rows="2" maxlength="80" placeholder="예) 오로라 보러 가기" required></textarea>
+    <textarea id="text" rows="2" maxlength="80" placeholder="살면서 꼭 해 보고 싶은 일 하나 (예: 오로라 보러 가기)"></textarea>
     <div class="row">
       <label class="sr" for="name">이름</label>
       <input id="name" maxlength="12" placeholder="이름 (선택)">
-      <span class="count" id="count">0/80</span>
+      <span class="len" id="len">0/80</span>
     </div>
-    <button type="submit" id="send" disabled>남기기</button>
+    <button type="submit" class="send" id="send" disabled>남기기</button>
     <p class="msg" id="msg" role="status" aria-live="polite"></p>
   </form>
+</section>
 
-  <!-- 모두의 버킷리스트 (최신순) -->
-  <section class="board">
-    <h2>모두의 버킷리스트</h2>
-    <ol class="list" id="list"></ol>
-    <p class="empty" id="empty" hidden>아직 남긴 글이 없어요. 첫 번째로 남겨 주세요.</p>
-    <button class="more" id="more" hidden>더 보기</button>
-  </section>
-</main>
+<!-- 도형을 눌렀을 때 보이는 글 -->
+<div class="card" id="card" hidden>
+  <div class="card-box" role="dialog" aria-modal="true">
+    <span class="card-shape" id="cardShape"></span>
+    <p class="card-text" id="cardText"></p>
+    <small class="card-meta" id="cardMeta"></small>
+  </div>
+</div>
+
 <script src="app.js"></script>
 </body>
 </html>
