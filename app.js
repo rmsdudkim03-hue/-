@@ -143,6 +143,7 @@ async function refresh(first = false) {
   } catch {
     if (first) $('note').textContent = '글을 불러오지 못했어요. 새로고침해 주세요.';
   }
+  if (first) window.loaderReady?.(); // 로딩 화면 닫아도 됨
 }
 // 새 글 확인 (화면을 보고 있을 때만)
 setInterval(() => { if (!document.hidden && $('sheet').hidden) refresh(); }, 30_000);

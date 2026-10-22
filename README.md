@@ -25,6 +25,7 @@
 | 파일 | 하는 일 |
 |---|---|
 | `index.html` `app.js` | 관람객 화면 |
+| `loader.js` `assets/logo.svg` | 로딩 화면 (주소 끝에 `#loader`를 붙이면 계속 보임) |
 | `admin.html` `admin.js` | 관리 화면 |
 | `style.css` | 디자인 (색은 맨 위 `:root`에서 바꿈) |
 | `api/bucket.js` | 서버: 글 읽기·쓰기·지우기 |

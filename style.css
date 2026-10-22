@@ -18,6 +18,7 @@
   --bad: #c62828;
   --font: 'Apple SD Gothic Neo', 'Noto Sans KR', system-ui, sans-serif;
   --w: min(100vw, 480px);
+  --u: calc(var(--w) / 402);   /* 로딩 화면: 피그마 1px (프레임 폭 402) = 화면 몇 px */
   --cell: calc(var(--w) / 8);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -276,3 +277,43 @@ body.admin { background: #fff; }
 .admin .dot { display: inline-block; width: 14px; height: 14px; margin-right: 6px; vertical-align: -2px; background: var(--col); border-radius: 3px; }
 .admin .dot.circle { border-radius: 50%; }
 .admin .dot.triangle { border-radius: 0; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+
+/* 로딩 화면 (피그마 402×874 프레임 기준, 좌표 × --u)
+   도형은 화면 세로 가운데, 그림자는 그보다 100 아래 (피그마: 도형 가운데 437, 그림자 가운데 537) */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #fff;
+  transition: opacity .45s ease;
+}
+.loader.out { opacity: 0; pointer-events: none; }
+.loader-logo {
+  position: absolute;
+  left: calc(50% - var(--w) / 2 + var(--u) * 49);
+  top: calc(var(--u) * 80 + env(safe-area-inset-top));
+  width: calc(var(--u) * 70);
+  height: auto;
+}
+.loader-stage { position: absolute; left: 50%; top: 50%; width: 0; height: 0; }
+.loader-shadow {
+  position: absolute;
+  left: calc(var(--u) * -39);
+  top: calc(var(--u) * 93);
+  width: calc(var(--u) * 77);
+  height: calc(var(--u) * 14);
+  border-radius: 50%;
+  background: #e6e5e6;
+}
+.loader-shape {
+  position: absolute;
+  left: calc(var(--u) * -33.5);
+  top: calc(var(--u) * -33.5);
+  width: calc(var(--u) * 67);
+  height: calc(var(--u) * 67);
+  transform-origin: 50% 100%;   /* 바닥에 닿을 때 아래쪽 기준으로 납작해짐 */
+}
+.loader-flip { width: 100%; height: 100%; display: grid; place-items: center; }
+.loader-flip svg { display: block; width: calc(var(--u) * var(--s, 62)); height: auto; }
+.loader-flip svg[width="67"] { --s: 67; }
+.loader-flip svg[width="60"] { --s: 62.13; }
